@@ -29,12 +29,17 @@ async def go_count():
     channel = client.get_channel(1214006594090565642)
     how_many_mojis = 0
     word = "💩"
+    moji_dict = {}
     async for message in channel.history():
         if word in message.content:
-            how_many_mojis += 1
+            if message.author.name in moji_dict.keys():
+                moji_dict[message.author.name] += 1
+                how_many_mojis += 1
+            else:
+                moji_dict[message.author.name] = 1
+                how_many_mojis += 1              
     print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
-
-
+    print(moji_dict)
 
 
 @client.event
