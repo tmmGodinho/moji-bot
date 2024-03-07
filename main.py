@@ -2,9 +2,11 @@ import discord
 import random
 from dotenv import load_dotenv
 import os
+import datetime
 
-#IMPLEMENT GOODBYE I SLEEP MESSAGE
 
+# IMPLEMENT GOODBYE I SLEEP MESSAGE
+# CTRL+/ para comentar blocos
 
 load_dotenv()
 
@@ -17,8 +19,22 @@ client = discord.Client(intents=intents)
 @client.event
 async def on_ready():
     print(f'We have logged in as {client.user}')
+
+    # corre procedimento 
+    await go_count()
     # channel = client.get_channel(297815778084782081)
     # await channel.send("<@196422847818629120> you're next")
+
+async def go_count():
+    channel = client.get_channel(1214006594090565642)
+    how_many_mojis = 0
+    word = "💩"
+    async for message in channel.history():
+        if word in message.content:
+            how_many_mojis += 1
+    print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
+
+
 
 
 @client.event
