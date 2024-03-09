@@ -41,14 +41,24 @@ async def go_count():
     print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
     print(moji_dict)
     
+    ordered_list = dict(sorted(moji_dict.items(), key=lambda item: item[1], reverse=True))
     ranking = 'Hello. This is a test of the ranking feature\n'
-    for key in moji_dict:
-        ranking += f"{key} > {moji_dict[key]}\n"
+    place = 1
+    for key in ordered_list:
+        if place == 1:
+            ranking += f":first_place: {key} > {moji_dict[key]}\n"
+        if place == 2:
+            ranking += f":second_place: {key} > {moji_dict[key]}\n"
+        if place == 3:
+            ranking += f":third_place: {key} > {moji_dict[key]}\n"
+        if place > 3:
+            ranking += f"{key} > {moji_dict[key]}\n"
+        place += 1
     print(ranking)
+    await message.channel.send(f'{ranking}')
+# :first_place::second_place: :third_place: 
 
-    # await message.channel.send(f'{ranking}')
-
-#     >>> for key in likes:
+#     >>> for key in likes:         
 # ...     print(key, "->", likes[key])
 
 
