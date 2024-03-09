@@ -40,6 +40,16 @@ async def go_count():
                 how_many_mojis += 1              
     print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
     print(moji_dict)
+    
+    ranking = 'Hello. This is a test of the ranking feature\n'
+    for key in moji_dict:
+        ranking += f"{key} > {moji_dict[key]}\n"
+    print(ranking)
+
+    # await message.channel.send(f'{ranking}')
+
+#     >>> for key in likes:
+# ...     print(key, "->", likes[key])
 
 
 @client.event
@@ -55,7 +65,6 @@ async def on_message(message):
         if attack_girao_prob < .25:
             await message.reply("Calado eras poeta")
         
-        #await message.channel.send('Calado eras poeta')
 
     if message.author == client.user:
         return
