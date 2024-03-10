@@ -45,15 +45,17 @@ async def go_count():
     ranking = 'Hello. This is a test of the ranking feature\n'
     place = 1
     for key in ordered_list:
-        if place == 1:
-            ranking += f":first_place: {key} > {moji_dict[key]}\n"
-        if place == 2:
-            ranking += f":second_place: {key} > {moji_dict[key]}\n"
-        if place == 3:
-            ranking += f":third_place: {key} > {moji_dict[key]}\n"
-        if place > 3:
-            ranking += f"{key} > {moji_dict[key]}\n"
+        match place:
+            case 1:
+                ranking += f":first_place: {key} > {moji_dict[key]}\n"
+            case 2:
+                ranking += f":second_place: {key} > {moji_dict[key]}\n"
+            case 3:
+                ranking += f":third_place: {key} > {moji_dict[key]}\n"
+            case _:
+                ranking += f"{key} > {moji_dict[key]}\n"
         place += 1
+
     print(ranking)
     await message.channel.send(f'{ranking}')
 # :first_place::second_place: :third_place: 
