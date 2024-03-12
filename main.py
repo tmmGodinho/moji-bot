@@ -32,11 +32,12 @@ async def go_count():
     moji_dict = {}
     async for message in channel.history():
         if word in message.content:
-            if message.author.name in moji_dict.keys():
-                moji_dict[message.author.name] += 1
+            if message.author.id in moji_dict.keys():
+                moji_dict[message.author.id] += 1
                 how_many_mojis += 1
             else:
-                moji_dict[message.author.name] = 1
+                print("i go here")
+                moji_dict[message.author.id] = 1
                 how_many_mojis += 1              
     print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
     print(moji_dict)
@@ -47,17 +48,24 @@ async def go_count():
     for key in ordered_list:
         match place:
             case 1:
-                ranking += f":first_place: {key} > {moji_dict[key]}\n"
+                ranking += f":first_place: <@{key}> > {ordered_list[key]}\n"
             case 2:
-                ranking += f":second_place: {key} > {moji_dict[key]}\n"
+                ranking += f":second_place: <@{key}> > {ordered_list[key]}\n"
             case 3:
-                ranking += f":third_place: {key} > {moji_dict[key]}\n"
+                ranking += f":third_place: <@{key}> > {ordered_list[key]}\n"
             case _:
-                ranking += f"{key} > {moji_dict[key]}\n"
+                ranking += f"#{place}:<@{key}> > {ordered_list[key]}\n"
         place += 1
-
+    print
     print(ranking)
     await message.channel.send(f'{ranking}')
+
+    
+    
+    
+
+
+
 # :first_place::second_place: :third_place: 
 
 #     >>> for key in likes:         
