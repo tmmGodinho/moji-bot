@@ -56,9 +56,9 @@ async def go_count():
             case _:
                 ranking += f"#{place}:<@{key}> > {ordered_list[key]}\n"
         place += 1
-    print
     print(ranking)
-    await message.channel.send(f'{ranking}')
+    embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
+    await message.channel.send(embed=embed)
 
     
     
