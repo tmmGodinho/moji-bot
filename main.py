@@ -3,18 +3,19 @@ import random
 from dotenv import load_dotenv
 import os
 import datetime
+from moji_client import MojiClient
 
 
 # IMPLEMENT GOODBYE I SLEEP MESSAGE
 # CTRL+/ para comentar blocos
 
+#TODO on class init, call a new method: parse historical messages. This should populate class variables
+#TODO inside of class, create a gen_message method that returns the message you want to send. It should use the class variables defined through your init logic
+#TODO call format from your event method that will trigger it
+#TODO run it cleanly from your main.py file
+
 load_dotenv()
-
-
-intents = discord.Intents.default()
-intents.message_content = True
-
-client = discord.Client(intents=intents)
+client = MojiClient()
 
 @client.event
 async def on_ready():
@@ -58,7 +59,7 @@ async def go_count():
         place += 1
     print(ranking)
     embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
-    await message.channel.send(embed=embed)
+    # await message.channel.send(embed=embed)
 
     
     
