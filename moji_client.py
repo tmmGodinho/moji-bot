@@ -21,20 +21,8 @@ class MojiClient(discord.Client):
 
     async def go_count(self):
         channel = self.get_channel(1214006594090565642)
-        how_many_mojis = 0
         moji_dict = {}
-        async for message in channel.history():
-            if self.emoji in message.content:
-                if message.author.id in moji_dict.keys():
-                    moji_dict[message.author.id] += 1
-                    how_many_mojis += 1
-                else:
-                    print("i go here")
-                    moji_dict[message.author.id] = 1
-                    how_many_mojis += 1              
-        print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
-        print(moji_dict)
-        
+        await self.parse_moji(moji_dict)
         ordered_list = dict(sorted(moji_dict.items(), key=lambda item: item[1], reverse=True))
         ranking = 'Hello. This is a test of the ranking feature\n'
         place = 1
@@ -52,6 +40,23 @@ class MojiClient(discord.Client):
         print(ranking)
         embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
         # await message.channel.send(embed=embed)
+
+
+
+    async def parse_moji(self, moji_dict):
+        how_many_mojis = 0
+        channel = self.get_channel(1214006594090565642)
+        async for message in channel.history():
+            if self.emoji in message.content:
+                if message.author.id in moji_dict.keys():
+                    moji_dict[message.author.id] += 1
+                    how_many_mojis += 1
+                else:
+                    moji_dict[message.author.id] = 1
+                    how_many_mojis += 1              
+        print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
+        print(moji_dict)
+
 
     async def on_message(self, message):
         print(message)
