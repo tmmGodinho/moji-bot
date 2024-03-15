@@ -23,21 +23,7 @@ class MojiClient(discord.Client):
         channel = self.get_channel(1214006594090565642)
         moji_dict = {}
         await self.parse_moji(moji_dict)
-        ordered_list = dict(sorted(moji_dict.items(), key=lambda item: item[1], reverse=True))
-        ranking = 'Hello. This is a test of the ranking feature\n'
-        place = 1
-        for key in ordered_list:
-            match place:
-                case 1:
-                    ranking += f":first_place: <@{key}> > {ordered_list[key]}\n"
-                case 2:
-                    ranking += f":second_place: <@{key}> > {ordered_list[key]}\n"
-                case 3:
-                    ranking += f":third_place: <@{key}> > {ordered_list[key]}\n"
-                case _:
-                    ranking += f"#{place}:<@{key}> > {ordered_list[key]}\n"
-            place += 1
-        print(ranking)
+        self.go_rank(moji_dict)
         embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
         # await message.channel.send(embed=embed)
 
@@ -56,6 +42,23 @@ class MojiClient(discord.Client):
                     how_many_mojis += 1              
         print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
         print(moji_dict)
+
+    def go_rank(moji_dict):
+        ordered_list = dict(sorted(moji_dict.items(), key=lambda item: item[1], reverse=True))
+        ranking = 'Hello. This is a test of the ranking feature\n'
+        place = 1
+        for key in ordered_list:
+            match place:
+                case 1:
+                    ranking += f":first_place: <@{key}> > {ordered_list[key]}\n"
+                case 2:
+                    ranking += f":second_place: <@{key}> > {ordered_list[key]}\n"
+                case 3:
+                    ranking += f":third_place: <@{key}> > {ordered_list[key]}\n"
+                case _:
+                    ranking += f"#{place}:<@{key}> > {ordered_list[key]}\n"
+            place += 1
+        print(ranking)
 
 
     async def on_message(self, message):
