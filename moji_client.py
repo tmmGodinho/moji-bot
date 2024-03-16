@@ -1,10 +1,15 @@
 import discord
 import random
+from datetime import datetime
+
+
 
 class MojiClient(discord.Client):
     moji_dict = {}
     ranking = 'Hello. This is a test of the ranking feature\n'
     
+
+
     def __init__(self):
         # TODO: GET EMOJI FROM .ENV
         self.emoji = "💩"
@@ -16,10 +21,8 @@ class MojiClient(discord.Client):
     async def on_ready(self):
         print(f'We have logged in as {self.user}')
 
-        # corre procedimento 
         await self.go_count()
-        # channel = client.get_channel(297815778084782081)
-        # await channel.send("<@196422847818629120> you're next")
+        # await channel.send("<@196422847818629120> you're next") /dd
 
     async def go_count(self):
         channel = self.get_channel(1214006594090565642)
@@ -32,7 +35,11 @@ class MojiClient(discord.Client):
     async def parse_moji(self):
         how_many_mojis = 0
         channel = self.get_channel(1214006594090565642)
-        async for message in channel.history():
+        day_today = datetime.today()
+        print("datetime is :", day_today)
+        day_one = day_today.replace(day = 1, hour = 0, minute = 0, second = 0)
+        print("first day of a month", day_one)
+        async for message in channel.history(after = day_one):
             if self.emoji in message.content:
                 if message.author.id in self.moji_dict.keys():
                     self.moji_dict[message.author.id] += 1
