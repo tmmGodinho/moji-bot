@@ -2,6 +2,8 @@ import discord
 import random
 
 class MojiClient(discord.Client):
+    moji_dict = {}
+    ranking = 'Hello. This is a test of the ranking feature\n'
     
     def __init__(self):
         # TODO: GET EMOJI FROM .ENV
@@ -21,51 +23,49 @@ class MojiClient(discord.Client):
 
     async def go_count(self):
         channel = self.get_channel(1214006594090565642)
-        moji_dict = {}
-        ranking = 'Hello. This is a test of the ranking feature\n'
-        await self.parse_moji(moji_dict)
-        ranking = self.go_rank(moji_dict, ranking)
-        await self.go_post(moji_dict, ranking, channel)
-
-        # embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
-        # await message.channel.send(embed=embed)
+        await self.parse_moji()
+        self.go_rank()
+        ranking = self.make_string()
+        await self.go_post(channel)
 
 
-
-    async def parse_moji(self, moji_dict):
+    async def parse_moji(self):
         how_many_mojis = 0
         channel = self.get_channel(1214006594090565642)
         async for message in channel.history():
             if self.emoji in message.content:
-                if message.author.id in moji_dict.keys():
-                    moji_dict[message.author.id] += 1
+                if message.author.id in self.moji_dict.keys():
+                    self.moji_dict[message.author.id] += 1
                     how_many_mojis += 1
                 else:
-                    moji_dict[message.author.id] = 1
+                    self.moji_dict[message.author.id] = 1
                     how_many_mojis += 1              
         print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
-        print(moji_dict)
+        print(self.moji_dict)
 
-    def go_rank(self, moji_dict, ranking):
-        ordered_list = dict(sorted(moji_dict.items(), key=lambda item: item[1], reverse=True))
+    def go_rank(self):
+        self.moji_dict = dict(sorted(self.moji_dict.items(), key=lambda item: item[1], reverse=True))
+        
+
+    def make_string(self):
         place = 1
-        for key in ordered_list:
+        for key in self.moji_dict:
             match place:
                 case 1:
-                    ranking += f":first_place: <@{key}> > {ordered_list[key]}\n"
+                    self.ranking += f":first_place: <@{key}> > {self.moji_dict[key]}\n"
                 case 2:
-                    ranking += f":second_place: <@{key}> > {ordered_list[key]}\n"
+                    self.ranking += f":second_place: <@{key}> > {self.moji_dict[key]}\n"
                 case 3:
-                    ranking += f":third_place: <@{key}> > {ordered_list[key]}\n"
+                    self.ranking += f":third_place: <@{key}> > {self.moji_dict[key]}\n"
                 case _:
-                    ranking += f"#{place}:<@{key}> > {ordered_list[key]}\n"
+                    self.ranking += f"#{place}:<@{key}> > {self.moji_dict[key]}\n"
             place += 1
-        print(ranking)
-        return ranking
+        print(self.ranking)
+        
 
 
-    async def go_post(self, moji_dict, ranking, channel):
-        print(ranking)
+    async def go_post(self, channel):
+        print(self.ranking)
         #embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
         #await channel.send(embed=embed)
 
