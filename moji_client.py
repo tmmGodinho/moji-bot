@@ -33,12 +33,16 @@ class MojiClient(discord.Client):
 
 
     async def parse_moji(self):
-        how_many_mojis = 0
         channel = self.get_channel(1214006594090565642)
         day_today = datetime.today()
         print("datetime is :", day_today)
         day_one = day_today.replace(day = 1, hour = 0, minute = 0, second = 0)
         print("first day of a month", day_one)
+        await self.fill_ranking(channel, day_one)
+        print(self.moji_dict)
+
+    async def fill_ranking(self, channel, day_one, final_day = False):
+        how_many_mojis = 0
         async for message in channel.history(after = day_one):
             if self.emoji in message.content:
                 if message.author.id in self.moji_dict.keys():
@@ -46,15 +50,15 @@ class MojiClient(discord.Client):
                     how_many_mojis += 1
                 else:
                     self.moji_dict[message.author.id] = 1
-                    how_many_mojis += 1              
+                    how_many_mojis += 1  
         print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
-        print(self.moji_dict)
 
     def go_rank(self):
         self.moji_dict = dict(sorted(self.moji_dict.items(), key=lambda item: item[1], reverse=True))
         
 
     def make_string(self):
+        self.ranking = 'Hello. This is a test of the ranking feature\n'
         place = 1
         for key in self.moji_dict:
             match place:
@@ -76,6 +80,10 @@ class MojiClient(discord.Client):
         #embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
         #await channel.send(embed=embed)
 
+    def go_last_month():
+        pass
+
+
 
     async def on_message(self, message):
         print(message)
@@ -87,4 +95,7 @@ class MojiClient(discord.Client):
         if message.author == self.user:
             return
         if message.content.startswith('$hello'):
-            await message.channel.send('Hello!')    
+            await message.channel.send('Hello!') & message.channel == 1214006594090565642   
+        if message.content.startswith('$lastmonth'):
+            self.go_last_month() 
+            
