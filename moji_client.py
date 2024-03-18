@@ -6,13 +6,13 @@ from datetime import datetime
 
 class MojiClient(discord.Client):
     moji_dict = {}
-    ranking = 'Hello. This is a test of the ranking feature\n'
+    ranking = ''
     
 
 
-    def __init__(self):
+    def __init__(self, emoji):
         # TODO: GET EMOJI FROM .ENV
-        self.emoji = "💩"
+        self.emoji = emoji
         intents = discord.Intents.default()
         intents.message_content = True
         super().__init__(intents = intents)
@@ -24,7 +24,7 @@ class MojiClient(discord.Client):
         await self.go_count()
         # await channel.send("<@196422847818629120> you're next") /dd
 
-    async def go_count(self):
+    async def go_count(self, last_month = False):
         channel = self.get_channel(1214006594090565642)
         await self.parse_moji()
         self.go_rank()
@@ -37,7 +37,7 @@ class MojiClient(discord.Client):
         day_today = datetime.today()
         print("datetime is :", day_today)
         day_one = day_today.replace(day = 1, hour = 0, minute = 0, second = 0)
-        print("first day of a month", day_one)
+        print("first day of the month", day_one)
         await self.fill_ranking(channel, day_one)
         print(self.moji_dict)
 

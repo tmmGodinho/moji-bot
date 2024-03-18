@@ -15,7 +15,9 @@ from moji_client import MojiClient
 #TODO implement datetime filter on message get
 
 load_dotenv()
-client = MojiClient()
+emoji = os.getenv("MOJI")
+client = MojiClient(emoji)
+
 
 #make this run from system variable instead of having the key here 
 #bot_key = os.environ['BOT_KEY']
