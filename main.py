@@ -16,7 +16,9 @@ from moji_client import MojiClient
 
 load_dotenv()
 emoji = os.getenv("MOJI")
-client = MojiClient(emoji)
+channel = os.getenv("CHANNEL")
+# channel = self.get_channel(1214006594090565642)
+client = MojiClient(emoji, channel)
 
 
 #make this run from system variable instead of having the key here 

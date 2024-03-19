@@ -10,9 +10,10 @@ class MojiClient(discord.Client):
     
 
 
-    def __init__(self, emoji):
+    def __init__(self, emoji, channel):
         # TODO: GET EMOJI FROM .ENV
         self.emoji = emoji
+        self.channel = channel
         intents = discord.Intents.default()
         intents.message_content = True
         super().__init__(intents = intents)
@@ -34,7 +35,7 @@ class MojiClient(discord.Client):
 
     async def parse_moji(self):
         channel = self.get_channel(1214006594090565642)
-        day_today = datetime.today()
+        day_today = datetime.now()
         print("datetime is :", day_today)
         day_one = day_today.replace(day = 1, hour = 0, minute = 0, second = 0)
         print("first day of the month", day_one)
@@ -43,15 +44,14 @@ class MojiClient(discord.Client):
 
     async def fill_ranking(self, channel, day_one, final_day = False):
         how_many_mojis = 0
-        async for message in channel.history(after = day_one):
+        async for message in channel.history(after = day_one, limit = 10000):
             if self.emoji in message.content:
                 if message.author.id in self.moji_dict.keys():
                     self.moji_dict[message.author.id] += 1
-                    how_many_mojis += 1
                 else:
                     self.moji_dict[message.author.id] = 1
-                    how_many_mojis += 1  
-        print(f"We have collectively 💩 {how_many_mojis} times. Great job.")
+                how_many_mojis += 1      
+        print(f"We have collectively {self.emoji} {how_many_mojis} times. Great job.")
 
     def go_rank(self):
         self.moji_dict = dict(sorted(self.moji_dict.items(), key=lambda item: item[1], reverse=True))
@@ -76,7 +76,7 @@ class MojiClient(discord.Client):
 
 
     async def go_post(self, channel):
-        print(self.ranking)
+        pass
         #embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
         #await channel.send(embed=embed)
 
