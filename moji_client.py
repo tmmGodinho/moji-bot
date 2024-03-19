@@ -7,44 +7,40 @@ from datetime import datetime
 class MojiClient(discord.Client):
     moji_dict = {}
     ranking = ''
-    
+    moji_channel = None
 
 
-    def __init__(self, emoji, channel):
-        # TODO: GET EMOJI FROM .ENV
+    def __init__(self, emoji, channel_id):
         self.emoji = emoji
-        self.channel = channel
         intents = discord.Intents.default()
         intents.message_content = True
         super().__init__(intents = intents)
+        self.channel_id = channel_id
+        
 
-    # @client.event
     async def on_ready(self):
         print(f'We have logged in as {self.user}')
-
+        self.moji_channel = self.get_channel(self.channel_id)
         await self.go_count()
-        # await channel.send("<@196422847818629120> you're next") /dd
 
     async def go_count(self, last_month = False):
-        channel = self.get_channel(1214006594090565642)
         await self.parse_moji()
         self.go_rank()
         ranking = self.make_string()
-        await self.go_post(channel)
+        await self.go_post()
 
 
     async def parse_moji(self):
-        channel = self.get_channel(1214006594090565642)
         day_today = datetime.now()
         print("datetime is :", day_today)
         day_one = day_today.replace(day = 1, hour = 0, minute = 0, second = 0)
         print("first day of the month", day_one)
-        await self.fill_ranking(channel, day_one)
+        await self.fill_ranking(day_one)
         print(self.moji_dict)
 
-    async def fill_ranking(self, channel, day_one, final_day = False):
+    async def fill_ranking(self, day_one, final_day = False):
         how_many_mojis = 0
-        async for message in channel.history(after = day_one, limit = 10000):
+        async for message in self.moji_channel.history(after = day_one, limit = 10000):
             if self.emoji in message.content:
                 if message.author.id in self.moji_dict.keys():
                     self.moji_dict[message.author.id] += 1
@@ -75,10 +71,10 @@ class MojiClient(discord.Client):
         
 
 
-    async def go_post(self, channel):
+    async def go_post(self):
         pass
         #embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
-        #await channel.send(embed=embed)
+        #await self.moji_channel.send(embed=embed)
 
     def go_last_month():
         pass
@@ -86,16 +82,10 @@ class MojiClient(discord.Client):
 
 
     async def on_message(self, message):
-        print(message)
-        if message.author.name == "ponei_lider":
-            attack_girao_prob = random.random()
-            print(attack_girao_prob)
-            if attack_girao_prob < .25:
-                await message.reply("Calado eras poeta")
         if message.author == self.user:
             return
         if message.content.startswith('$hello'):
-            await message.channel.send('Hello!') & message.channel == 1214006594090565642   
+            await message.channel.send('Hello!') 
         if message.content.startswith('$lastmonth'):
             self.go_last_month() 
             
