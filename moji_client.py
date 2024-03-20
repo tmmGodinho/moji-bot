@@ -35,6 +35,7 @@ class MojiClient(discord.Client):
         print("datetime is :", day_today)
         day_one = day_today.replace(day = 1, hour = 0, minute = 0, second = 0)
         print("first day of the month", day_one)
+        # self.parse_last_month()
         await self.fill_ranking(day_one)
         print(self.moji_dict)
 
@@ -68,6 +69,18 @@ class MojiClient(discord.Client):
                     self.ranking += f"#{place}:<@{key}> > {self.moji_dict[key]}\n"
             place += 1
         print(self.ranking)
+
+
+    async def parse_last_month(self):
+        self.moji_dict = {}
+        day_today = datetime.now()
+        print("datetime is :", day_today)
+        day_one = day_today.replace(day = 1, hour = 0, minute = 0, second = 0)
+        print("first day of the month", day_one)
+        day_one_last_month = day_one.replace(month=day_one.month-1)
+        print("first day of the last month", day_one_last_month)
+        await self.fill_ranking(day_one_last_month, day_one)
+        print(self.moji_dict)
         
 
 
@@ -76,8 +89,11 @@ class MojiClient(discord.Client):
         #embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
         #await self.moji_channel.send(embed=embed)
 
-    def go_last_month():
-        pass
+    async def go_last_month(self):
+        await self.parse_last_month()
+        self.go_rank()
+        ranking = self.make_string()
+        await self.go_post()
 
 
 
@@ -87,5 +103,5 @@ class MojiClient(discord.Client):
         if message.content.startswith('$hello'):
             await message.channel.send('Hello!') 
         if message.content.startswith('$lastmonth'):
-            self.go_last_month() 
+            await self.go_last_month() 
             
