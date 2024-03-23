@@ -30,18 +30,25 @@ class MojiClient(discord.Client):
         await self.go_post()
 
 
-    async def parse_moji(self):
+    async def parse_moji(self, last_month = False):
         day_today = datetime.now()
         print("datetime is :", day_today)
         day_one = day_today.replace(day = 1, hour = 0, minute = 0, second = 0)
         print("first day of the month", day_one)
-        # self.parse_last_month()
-        await self.fill_ranking(day_one)
+        if(last_month != False):
+            final_day = day_one.replace(month = final_day.month-1)
+            await self.fill_ranking(day_one, final_day=final_day)
+        else:
+            await self.fill_ranking(day_one)
         print(self.moji_dict)
 
     async def fill_ranking(self, day_one, final_day = False):
         how_many_mojis = 0
-        async for message in self.moji_channel.history(after = day_one, limit = 10000):
+        if(final_day == False):
+            final_day = datetime.now()
+        else:
+            pass
+        async for message in self.moji_channel.history(after = day_one, before = final_day, limit = 10000):
             if self.emoji in message.content:
                 if message.author.id in self.moji_dict.keys():
                     self.moji_dict[message.author.id] += 1
@@ -85,7 +92,7 @@ class MojiClient(discord.Client):
 
 
     async def go_post(self):
-        pass
+        print(self.ranking)
         #embed=discord.Embed(title="Test Embed", description=ranking, color=discord.Color.random())
         #await self.moji_channel.send(embed=embed)
 
