@@ -6,7 +6,7 @@ On startup, moji-bot will count and rank the current month's specified emoji usa
 # Setup
 Before moji-bot can operate, you will have to fill out the parameters in your .env file. The parameters are as follows:
 
--BOT_KEY: This is your bot's private key, and as such should be treated as very sensitive information. Do not share with anyone. You can find more details on how to get this here
+-BOT_KEY: This is your bot's private key, and as such should be treated as very sensitive information. Do not share with anyone. You can find more details on how to get this [here](https://www.writebots.com/discord-bot-token/)
 
 -MOJI: The emoji you want to rank. This works with actual emojis (you can search for emojis on windows using the 'WIN+.' shortcut)
 
